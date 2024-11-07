@@ -64,7 +64,7 @@ class Poster:
     def set_language(self, language):
         if language:
             try:
-                locale.setlocale(locale.LC_ALL, f"{language}.utf8")
+                locale.setlocale(locale.LC_ALL, f"{language}")
             except locale.Error as e:
                 print(f'Cannot set locale to "{language}": {e}')
                 language = None
