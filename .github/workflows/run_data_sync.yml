@@ -37,7 +37,6 @@ env:
   TITLE_GRID: Over 10km Runs # also here
   GITHUB_NAME: "action@github.com" # default Actions bot you can change it to yours
   GITHUB_EMAIL: "GitHub Action" # default Actions bot you can change it to yours
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # IGNORE_BEFORE_SAVING: True # if you want to ignore some data before saving, set this to True
   IGNORE_START_END_RANGE: 10 # Unit meter
@@ -218,9 +217,12 @@ jobs:
 
       - name: Push new runs
         if: env.SAVE_DATA_IN_GITHUB_CACHE != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "${{ env.GITHUB_EMAIL }}"
           git config --local user.name "${{ env.GITHUB_NAME }}"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
           git add .
           git commit -m 'update new runs' || echo "nothing to commit"
           git push || echo "nothing to push"
